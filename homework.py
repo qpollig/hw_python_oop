@@ -13,17 +13,19 @@ class InfoMessage:
         self.calories = calories
 
     def get_message(self) -> str:
-        return (f'Тип тренировки: {self.training_type}; '
+        message = (f'Тип тренировки: {self.training_type}; '
                 f'Длительность: {self.duration} ч.; '
                 f'Дистанция: {self.distance} км; '
                 f'Ср. скорость: {self.speed} км/ч; '
                 f'Потрачено ккал: {self.calories}.')
+        return message
 
 
 class Training:
     """Базовый класс тренировки."""
     M_IN_KM = 1000
     LEN_STEP = 0.65
+    training_type = ''
 
     def __init__(self,
                  action: int,
@@ -49,13 +51,15 @@ class Training:
         pass
 
     def show_training_info(self) -> InfoMessage:
+        return self
         """Вернуть информационное сообщение о выполненной тренировке."""
-        message = InfoMessage(self.training_type,
-                 self.duration,
-                 self.get_distance(),
-                 self.get_mean_speed(),
-                 self.get_spent_calories())
-        return message
+        '''message = InfoMessage(self.training_type,
+                              self.duration,
+                              self.get_distance(),
+                              self.get_mean_speed(),
+                              self.get_spent_calories()
+                              )
+        return message'''
 
 
 class Running(Training):
@@ -68,12 +72,6 @@ class Running(Training):
                  weight: float,
                  ) -> None:
         super().__init__(action, duration, weight)
-
-    def get_distance(self, LEN_STEP = 0.65) -> float:
-        return super().get_distance()
-
-    def get_mean_speed(self) -> float:
-        return super().get_mean_speed()
 
     def get_spent_calories(self) -> float:
         time_min_duration = self.duration * 60
@@ -95,12 +93,6 @@ class SportsWalking(Training):
         super().__init__(action, duration, weight)
         self.height = height
 
-    def get_distance(self) -> float:
-        return super().get_distance()
-
-    def get_mean_speed(self) -> float:
-        return super().get_mean_speed()
-
     def get_spent_calories(self) -> float:
         speed_sec = self.get_mean_speed() * 1000 / 3600
         height_meters = self.height / 100
@@ -108,7 +100,6 @@ class SportsWalking(Training):
         spent_calories = ((0.035 * self.weight + (speed_sec ** 2 / height_meters)
  * 0.029 * self.weight) * time_min_duration)
         return spent_calories
-
 
 
 class Swimming(Training):
@@ -127,9 +118,6 @@ class Swimming(Training):
         self.length_pool = length_pool
         self.count_pool = count_pool
 
-    def get_distance(self) -> float:
-        return super().get_distance()
-
     def get_mean_speed(self) -> float:
         speed = self.length_pool * self.count_pool / self.M_IN_KM / self.duration
         return speed
@@ -139,24 +127,10 @@ class Swimming(Training):
         return spent_calories
 
 
-
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
     packages_true = {}
     if workout_type == 'SWM':
-        '''training_type = 'Swimming'
-        action: int = data[0]
-        duration: float = data[1]
-        weight: float = data[2]
-        length_pool: float = data[3]
-        count_pool: float = data[4]
-        swim = Swimming(action, duration, weight, length_pool, count_pool, training_type)
-        distance = swim.get_distance()
-        speed = swim.get_mean_speed()
-        calories = swim.get_spent_calories(speed)
-        message = swim.show_training_info()
-        print(message.get_message())
-'''
         packages_true[workout_type] = Swimming.__name__
         swm = Swimming(data[0], data[1], data[2], data[3], data[4])
         return swm
@@ -164,14 +138,12 @@ def read_package(workout_type: str, data: list) -> Training:
         pass
     elif workout_type == 'WLK':
         pass
-    else:
-        return False
 
 
 def main(training: Training) -> None:
     """Главная функция."""
     info = training.show_training_info()
-    print(info)
+    print(info.get_message())
 
 
 if __name__ == '__main__':
