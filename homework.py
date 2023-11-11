@@ -56,8 +56,7 @@ class Training:
             self.duration,
             self.get_distance(),
             self.get_mean_speed(),
-            self.get_spent_calories()
-            )
+            self.get_spent_calories())
 
 
 class Running(Training):
