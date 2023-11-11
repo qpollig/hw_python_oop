@@ -20,10 +20,10 @@ class InfoMessage:
         speed = self.speed
         calories = self.calories
         message = (f'Тип тренировки: {training_type}; '
-                   f'Длительность: {duration: .3f} ч.; '
-                   f'Дистанция: {distance: .3f} км; '
-                   f'Ср. скорость: {speed: .3f} км/ч; '
-                   f'Потрачено ккал: {calories: .3f}.')
+                   f'Длительность:{duration: .3f} ч.; '
+                   f'Дистанция:{distance: .3f} км; '
+                   f'Ср. скорость:{speed: .3f} км/ч; '
+                   f'Потрачено ккал:{calories: .3f}.')
         return message
 
 
