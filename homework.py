@@ -35,7 +35,6 @@ class Training:
         self.action = action
         self.duration = duration
         self.weight = weight
-        self.training_type = self.__class__.__name__
 
     def get_distance(self) -> float:
         """Получить дистанцию в км."""
@@ -127,10 +126,6 @@ class Swimming(Training):
 
 def read_package(workout_type: str, data: list[float]) -> Training:
     """Прочитать данные полученные от датчиков."""
-    '''
-    if v := d.get('key'):
-    print(v)  # 'value'
-    '''
     training_types: dict[str, type[Training]] = {
         'SWM': Swimming,
         'RUN': Running,
@@ -138,7 +133,7 @@ def read_package(workout_type: str, data: list[float]) -> Training:
     }
     if training_type := training_types.get(workout_type):
         return training_type(*data)
-
+    raise ValueError(f'Неподдерживаемый тип тренировки: {workout_type}')
 
 def main(training: Training) -> None:
     """Главная функция."""
